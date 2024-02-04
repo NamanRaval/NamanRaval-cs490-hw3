@@ -1,3 +1,4 @@
+import { requireAuth } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
 export const comments = () => {
@@ -6,6 +7,13 @@ export const comments = () => {
 
 export const comment = ({ id }) => {
   return db.comment.findUnique({
+    where: { id },
+  })
+}
+
+export const deleteComment = ({ id }) => {
+  requireAuth({ roles: 'moderator' })
+  return db.comment.delete({
     where: { id },
   })
 }
